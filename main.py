@@ -1,6 +1,5 @@
 ﻿import datetime
 
-import schedule
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -88,13 +87,14 @@ def main():
             restaurant = Restaurant(name, url)
             places.append(restaurant)
 
-    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    with open(f'pizza_places_{date}.csv', 'w', newline='') as csvfile:
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")# get the current date and time
+
+    with open(f'pizza_places_{date}.csv', 'w', newline='') as csvfile: # include the date in the file name
         fieldnames = ['name', 'url', 'score']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-        with ThreadPoolExecutor(max_workers=5) as executor:
+        with ThreadPoolExecutor(max_workers=10) as executor:
             future_to_restaurant = {executor.submit(process_restaurant, restaurant): restaurant for restaurant in places}
             for future in future_to_restaurant:
                 restaurant, score = future.result()
@@ -105,7 +105,7 @@ def main():
     if scores:
         average_score = sum(scores) / len(scores)
         print(f'Average change in pizza places right now: {average_score:.2f}')
-        with open(f'pizza_places_{date}_{average_score:.2f}.csv', 'w', newline='') as csvfile:
+        with open(f'pizza_places_{date}_{average_score:.2f}.csv', 'w', newline='') as csvfile:# include the final value of change in the file name
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for restaurant in places:
@@ -113,10 +113,5 @@ def main():
     else:
         print('No valid scores to calculate the average.')
 
-
 if __name__ == '__main__':
-    schedule.every(60).minutes.do(main)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    main()
