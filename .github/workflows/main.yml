@@ -1,8 +1,8 @@
-name: Run Python script every 5 minutes
+name: Run Python script every 5 minutes and commit results to repo
 
 on:
   schedule:
-    - cron: '*/60 * * * *'
+    - cron: '*/5 * * * *'
   push:
     branches:
       - main
@@ -29,8 +29,18 @@ jobs:
     - name: Run script
       run: python main.py
 
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: pizza_places
-        path: ./*.csv
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit and push changes if there are any
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        git add results/*.csv
+        if [ -n "$(git status --porcelain)" ]; then
+          git commit -m "Add generated CSV files to results folder"
+          git push -u origin HEAD:main
+        else
+          echo "No changes to commit"
