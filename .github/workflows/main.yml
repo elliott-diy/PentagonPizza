@@ -39,7 +39,7 @@ jobs:
         if [ -n "$(git status --porcelain)" ]; then
           git add results/*.csv
           git commit -m "Add generated CSV files to results folder"
-          git push -u origin HEAD:main
+          git push -u origin HEAD:master
         else
           echo "No changes to commit"
         fi
