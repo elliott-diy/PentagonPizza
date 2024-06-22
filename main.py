@@ -106,16 +106,7 @@ def main():
                     scores.append(score)
                     writer.writerow({'name': restaurant.name, 'url': restaurant.url, 'score': score})
 
-    if scores:
-        average_score = sum(scores) / len(scores)
-        print(f'Average change in pizza places right now: {average_score:.2f}')
-        with open(f'results/pizza_places_{date}_{average_score:.2f}.csv', 'w', newline='') as csvfile:  # include the final value of change in the file name
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for restaurant in places:
-                writer.writerow({'name': restaurant.name, 'url': restaurant.url, 'score': restaurant.scores[-1] if restaurant.scores else None})
-    else:
-        print('No valid scores to calculate the average.')
+
 
 if __name__ == '__main__':
     main()
