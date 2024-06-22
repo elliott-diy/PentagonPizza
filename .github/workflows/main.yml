@@ -2,7 +2,7 @@ name: Run Python script every 5 minutes and commit results to repo
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/60 * * * *'
   push:
     branches:
       - main
@@ -34,11 +34,12 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-    - name: Commit and push changes if there are any
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    - name: Add changes to Git
       run: |
         git add results/*.csv
+
+    - name: Check for changes and commit
+      run: |
         if [ -n "$(git status --porcelain)" ]; then
           git commit -m "Add generated CSV files to results folder"
           git push -u origin HEAD:main
