@@ -1,4 +1,4 @@
-name: Run Python script every 5 minutes and commit results to repo
+name: Run Python script every 60 minutes and commit results to repo
 
 on:
   schedule:
@@ -34,13 +34,10 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-    - name: Add changes to Git
-      run: |
-        git add results/*.csv
-
-    - name: Check for changes and commit
+    - name: Check Git status and commit changes if necessary
       run: |
         if [ -n "$(git status --porcelain)" ]; then
+          git add results/*.csv
           git commit -m "Add generated CSV files to results folder"
           git push -u origin HEAD:main
         else
