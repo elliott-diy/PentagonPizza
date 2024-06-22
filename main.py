@@ -87,13 +87,12 @@ def main():
             restaurant = Restaurant(name, url)
             places.append(restaurant)
 
-    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")  # get the current date and time
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")  
 
-    # Create results folder if it doesn't exist
     if not os.path.exists("results"):
         os.makedirs("results")
 
-    with open(f'results/pizza_places_{date}.csv', 'w', newline='') as csvfile:  # include the date in the file name
+    with open(f'results/pizza_places_{date}.csv', 'w', newline='') as csvfile:  
         fieldnames = ['name', 'url', 'score']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
