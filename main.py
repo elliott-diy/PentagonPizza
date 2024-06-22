@@ -97,7 +97,7 @@ def main():
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-        with ThreadPoolExecutor(max_workers=15) as executor:
+        with ThreadPoolExecutor(max_workers=25) as executor:
             future_to_restaurant = {executor.submit(process_restaurant, restaurant): restaurant for restaurant in places}
             for future in future_to_restaurant:
                 restaurant, score = future.result()
