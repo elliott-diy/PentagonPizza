@@ -1,5 +1,5 @@
 ﻿import datetime
-
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -87,9 +87,13 @@ def main():
             restaurant = Restaurant(name, url)
             places.append(restaurant)
 
-    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")# get the current date and time
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")  # get the current date and time
 
-    with open(f'pizza_places_{date}.csv', 'w', newline='') as csvfile: # include the date in the file name
+    # Create results folder if it doesn't exist
+    if not os.path.exists("results"):
+        os.makedirs("results")
+
+    with open(f'results/pizza_places_{date}.csv', 'w', newline='') as csvfile:  # include the date in the file name
         fieldnames = ['name', 'url', 'score']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
@@ -105,7 +109,7 @@ def main():
     if scores:
         average_score = sum(scores) / len(scores)
         print(f'Average change in pizza places right now: {average_score:.2f}')
-        with open(f'pizza_places_{date}_{average_score:.2f}.csv', 'w', newline='') as csvfile:# include the final value of change in the file name
+        with open(f'results/pizza_places_{date}_{average_score:.2f}.csv', 'w', newline='') as csvfile:  # include the final value of change in the file name
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for restaurant in places:
