@@ -5,6 +5,7 @@ import time
 import json
 import csv
 from concurrent.futures import ThreadPoolExecutor
+import uuid
 
 # Selenium imports for web scraping
 from selenium import webdriver
@@ -67,7 +68,8 @@ def process_restaurant(restaurant):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.add_argument(f"--user-data-dir=/tmp/selenium_{uuid.uuid4()}")
+    driver = webdriver.Chrome(options=chrome_options,)
 
     try:
         score = restaurant.update(driver)
