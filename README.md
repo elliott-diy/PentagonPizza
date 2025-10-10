@@ -25,7 +25,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ---
 
-**Disclaimer:** This project is for fun and educational purposes only. It tracks business activity levels, not actual pizza orders, and should not be used for any official surveillance.
+**Disclaimer:** This project is for fun and educational purposes only. It tracks business activity levels, not actual pizza orders.
 
 Happy pizza tracking! 🍕
 
